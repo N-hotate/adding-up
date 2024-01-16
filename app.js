@@ -47,14 +47,14 @@ rl.on('close', () => {
   for (const [key, value] of prefDataMap) {
     value.change = value.after / value.before;
   }
-  // 変化率の降順（大きい順）に並び替える
-  // ※ sort関数を使うために、まず連想配列を普通の配列に変換する
+  // 変化率順に並び替える（sort関数を使うために、まず連想配列を普通の配列に変換する）
   const rankingArray = Array.from(prefDataMap).sort((pair1, pair2) => {
-    return pair2[1].change - pair1[1].change;
+    // return pair2[1].change - pair1[1].change; // 変化率の降順（大きい順）
+    return pair1[1].change - pair2[1].change; // 変化率の昇順（小さい順）
   });
-  // map関数を使って配列を整形する
-  const rankingStrings = rankingArray.map(([key, value]) => {
-    return `${key}: ${value.before} => ${value.after} 変化率： ${value.change}`;
+  // map関数を使って配列を整形する（第二引数で添字を取得できる）
+  const rankingStrings = rankingArray.map(([key, value], i) => {
+    return `${i + 1}位 ${key}: ${value.before} => ${value.after} 変化率： ${value.change}`;
   });
   console.log(rankingStrings);
 });
